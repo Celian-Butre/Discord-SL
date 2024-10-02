@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
@@ -8,10 +9,11 @@ load_dotenv()
 TOKEN = os.getenv('TOKEN')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
+script_path = os.path.dirname(os.path.realpath(__file__))
 
 def getTextFromFile(n):
     text = '```'
-    with open(f"/outputs/sl_output_{n}.txt", 'r') as file:
+    with open(f"{script_path}/outputs/sl_output_{n}.txt", 'r') as file:
         text += file.read()
     text += '```'
     return(text)
@@ -19,10 +21,9 @@ def getTextFromFile(n):
 @bot.command(name = "sl")
 async def sl(ctx):
     msg = await ctx.send(getTextFromFile(1))
-    for i in range(2,204):
+    for i in range(2,152):
         await msg.edit(content=getTextFromFile(i))
         await asyncio.sleep(0.5)
-
     await msg.delete()
 
 @bot.event
